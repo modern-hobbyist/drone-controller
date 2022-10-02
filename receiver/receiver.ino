@@ -43,8 +43,8 @@ void resetData()
   data.yaw = 127;
   data.pitch = 127;
   data.roll = 127;
-  data.AUX1 = 0;
-  data.AUX2= 0;
+  data.AUX1 = 1;
+  data.AUX2= 1;
   
   setPPMValuesFromData();
 }
