@@ -163,42 +163,45 @@ void readTrim() {
   if(rightTrimSwitch.isPressed())
     settingRollTrim = !settingRollTrim; //Switch which axis is getting trim adjusted
 
-  int leftTrimRead = leftTrim.read()/4;
-  int rightTrimRead = rightTrim.read()/4;
-  int leftTrimAdjust = 0;
-  int rightTrimAdjust = 0;
+  //Added this to prevent trim from being adjusted while button is pressed.
+  if(!leftTrimSwitch.isPressed() && !rightTrimSwitch.isPressed()){
+    int leftTrimRead = leftTrim.read()/4;
+    int rightTrimRead = rightTrim.read()/4;
+    int leftTrimAdjust = 0;
+    int rightTrimAdjust = 0;
 
-  if(lastLeftTrimPos != leftTrimRead){
-    leftTrimAdjust = (lastLeftTrimPos - leftTrimRead) * -1;
-    lastLeftTrimPos = leftTrimRead;
+    if(lastLeftTrimPos != leftTrimRead){
+      leftTrimAdjust = (lastLeftTrimPos - leftTrimRead) * -1;
+      lastLeftTrimPos = leftTrimRead;
+    }
+    
+    if(lastRightTrimPos != rightTrimRead){
+      rightTrimAdjust = (lastRightTrimPos - rightTrimRead) * -1;
+      lastRightTrimPos = rightTrimRead;
+    }  
+
+    if(settingYawTrim){
+      trim.yaw += leftTrimAdjust;
+      leds[0] = CRGB::Blue;
+      leds[1] = CRGB::Black;
+    } else {
+      leds[0] = CRGB::Black;
+      leds[1] = CRGB::Blue;
+      trim.throttle += leftTrimAdjust;
+    }
+
+    if(settingRollTrim){
+      leds[2] = CRGB::Black;
+      leds[3] = CRGB::Blue;
+      trim.roll += rightTrimAdjust;
+    } else {
+      leds[2] = CRGB::Blue;
+      leds[3] = CRGB::Black;
+      trim.pitch += rightTrimAdjust;
+    }
+
+    FastLED.show();
   }
-  
-  if(lastRightTrimPos != rightTrimRead){
-    rightTrimAdjust = (lastRightTrimPos - rightTrimRead) * -1;
-    lastRightTrimPos = rightTrimRead;
-  }  
-
-  if(settingYawTrim){
-    trim.yaw += leftTrimAdjust;
-    leds[0] = CRGB::Blue;
-    leds[1] = CRGB::Black;
-  } else {
-    leds[0] = CRGB::Black;
-    leds[1] = CRGB::Blue;
-    trim.throttle += leftTrimAdjust;
-  }
-
-  if(settingRollTrim){
-    leds[2] = CRGB::Black;
-    leds[3] = CRGB::Blue;
-    trim.roll += rightTrimAdjust;
-  } else {
-    leds[2] = CRGB::Blue;
-    leds[3] = CRGB::Black;
-    trim.pitch += rightTrimAdjust;
-  }
-
-  FastLED.show();
 }
 
 void printEncoders(){
