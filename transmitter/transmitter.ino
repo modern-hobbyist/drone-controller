@@ -15,7 +15,7 @@
 #define ENCODER_1_SW 9
 #define ENCODER_1_DT 2
 #define ENCODER_1_CLK 4
-#define ENCODER_2_SW 10
+#define ENCODER_2_SW A5
 #define ENCODER_2_DT 3
 #define ENCODER_2_CLK 6
 #define LED_PIN A4
@@ -136,7 +136,7 @@ int mapJoystickValues(int val, int lower, int middle, int upper, bool reverse)
 void loop()
 {
   
-  readTrim();  
+  readTrim();
 
   // The calibration numbers used here should be measured 
   // for your joysticks till they send the correct values.
@@ -147,14 +147,17 @@ void loop()
   data.AUX1     = digitalRead(AUX_PIN_1); //The 2 toggle switches
   // data.AUX2     = digitalRead(AUX_PIN_2);
 
+  // printEncoders();
+
   radio.write(&data, sizeof(MyData));
-  printEncoders();
   saveTrim();
 }
 
 void readTrim() {
   leftTrimSwitch.loop(); // MUST call the loop() function first
   rightTrimSwitch.loop(); // MUST call the loop() function first
+  int leftTrimButtonState = leftTrimSwitch.getState();
+  int rightTrimButtonState = rightTrimSwitch.getState(); 
 
   if(leftTrimSwitch.isPressed())
     settingYawTrim = !settingYawTrim; //Switch which axis is getting trim adjusted
@@ -164,7 +167,7 @@ void readTrim() {
     settingRollTrim = !settingRollTrim; //Switch which axis is getting trim adjusted
 
   //Added this to prevent trim from being adjusted while button is pressed.
-  if(!leftTrimSwitch.isPressed() && !rightTrimSwitch.isPressed()){
+  if(leftTrimButtonState != 0 && rightTrimButtonState!= 0){
     int leftTrimRead = leftTrim.read()/4;
     int rightTrimRead = rightTrim.read()/4;
     int leftTrimAdjust = 0;
