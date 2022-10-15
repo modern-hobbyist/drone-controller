@@ -148,6 +148,7 @@ void loop()
   // data.AUX2     = digitalRead(AUX_PIN_2);
 
   // printEncoders();
+  // Serial.println(data.throttle);
 
   radio.write(&data, sizeof(MyData));
   saveTrim();
