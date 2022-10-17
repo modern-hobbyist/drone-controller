@@ -20,6 +20,7 @@
 #define ENCODER_2_CLK 6
 #define LED_PIN A4
 #define NUM_LEDS 4
+#define TRIM_SAVE_DELAY 1000
 
 #define CSN 7
 #define CE 8
@@ -57,6 +58,7 @@ CRGB leds[NUM_LEDS];
 
 long lastLeftTrimPos = 0;
 long lastRightTrimPos = 0;
+long lastTrimSaved = 0;
 bool settingYawTrim = true;
 bool settingRollTrim = true;
 
@@ -79,6 +81,7 @@ void saveTrim(){
   EEPROM.put(2, trim.yaw);
   EEPROM.put(4, trim.pitch);
   EEPROM.put(6, trim.roll);
+  lastTrimSaved = millis();
 }
 
 void setTrim(){
@@ -113,7 +116,7 @@ void setup()
   //Start everything up
   radio.begin();
   radio.openWritingPipe(address);
-  radio.setPALevel(RF24_PA_MIN);
+  radio.setPALevel(RF24_PA_MAX);
   radio.stopListening();
   resetData();
   setTrim();
@@ -141,9 +144,9 @@ void loop()
   // The calibration numbers used here should be measured 
   // for your joysticks till they send the correct values.
   data.throttle = mapJoystickValues( analogRead(THROTTLE), 46, trim.throttle, 869, true);
-  data.yaw      = mapJoystickValues( analogRead(YAW),  67, trim.yaw, 902, true );
-  data.pitch    = mapJoystickValues( analogRead(PITCH), 103, trim.pitch, 945, true );
-  data.roll     = mapJoystickValues( analogRead(ROLL), 53, trim.roll, 922, true );
+  data.yaw      = mapJoystickValues( analogRead(YAW),  67, trim.yaw, 902, false );
+  data.pitch    = mapJoystickValues( analogRead(PITCH), 103, trim.pitch, 945, false );
+  data.roll     = mapJoystickValues( analogRead(ROLL), 53, trim.roll, 922, false );
   data.AUX1     = digitalRead(AUX_PIN_1); //The 2 toggle switches
   // data.AUX2     = digitalRead(AUX_PIN_2);
 
@@ -151,7 +154,9 @@ void loop()
   // Serial.println(data.throttle);
 
   radio.write(&data, sizeof(MyData));
-  saveTrim();
+  if(millis() - lastTrimSaved > TRIM_SAVE_DELAY){
+    saveTrim(); 
+  }
 }
 
 void readTrim() {
@@ -185,23 +190,23 @@ void readTrim() {
     }  
 
     if(settingYawTrim){
-      trim.yaw += leftTrimAdjust;
-      leds[0] = CRGB::Blue;
-      leds[1] = CRGB::Black;
-    } else {
-      leds[0] = CRGB::Black;
+      trim.yaw -= leftTrimAdjust;
       leds[1] = CRGB::Blue;
+      leds[0] = CRGB::Black;
+    } else {
+      leds[1] = CRGB::Black;
+      leds[0] = CRGB::Blue;
       trim.throttle += leftTrimAdjust;
     }
 
     if(settingRollTrim){
       leds[2] = CRGB::Black;
       leds[3] = CRGB::Blue;
-      trim.roll += rightTrimAdjust;
+      trim.roll -= rightTrimAdjust;
     } else {
       leds[2] = CRGB::Blue;
       leds[3] = CRGB::Black;
-      trim.pitch += rightTrimAdjust;
+      trim.pitch -= rightTrimAdjust;
     }
 
     FastLED.show();
