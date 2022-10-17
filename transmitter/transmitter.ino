@@ -9,8 +9,8 @@
 
 #define THROTTLE A0
 #define YAW A1
-#define PITCH A2
-#define ROLL A3
+#define PITCH A3
+#define ROLL A2
 #define AUX_PIN_1 5
 #define ENCODER_1_SW 9
 #define ENCODER_1_DT 2
@@ -145,8 +145,8 @@ void loop()
   // for your joysticks till they send the correct values.
   data.throttle = mapJoystickValues( analogRead(THROTTLE), 46, trim.throttle, 869, true);
   data.yaw      = mapJoystickValues( analogRead(YAW),  67, trim.yaw, 902, false );
-  data.pitch    = mapJoystickValues( analogRead(PITCH), 103, trim.pitch, 945, false );
-  data.roll     = mapJoystickValues( analogRead(ROLL), 53, trim.roll, 922, false );
+  data.pitch    = mapJoystickValues( analogRead(PITCH), 103, trim.pitch, 945, true );
+  data.roll     = mapJoystickValues( analogRead(ROLL), 53, trim.roll, 922, true );
   data.AUX1     = digitalRead(AUX_PIN_1); //The 2 toggle switches
   // data.AUX2     = digitalRead(AUX_PIN_2);
 
@@ -202,11 +202,11 @@ void readTrim() {
     if(settingRollTrim){
       leds[2] = CRGB::Black;
       leds[3] = CRGB::Blue;
-      trim.roll -= rightTrimAdjust;
+      trim.roll += rightTrimAdjust;
     } else {
       leds[2] = CRGB::Blue;
       leds[3] = CRGB::Black;
-      trim.pitch -= rightTrimAdjust;
+      trim.pitch += rightTrimAdjust;
     }
 
     FastLED.show();
