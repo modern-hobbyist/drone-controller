@@ -1,6 +1,5 @@
 <img src="https://user-images.githubusercontent.com/11777512/193417321-0d75b568-dd6f-413f-b07a-3bc9015a0106.png" width="350">
-![Thumbnail-7](https://user-images.githubusercontent.com/11777512/204952323-be2b104b-53b5-4610-810a-11e4d15072c5.png)
-
+<img src="https://user-images.githubusercontent.com/11777512/193417321-0d75b568-dd6f-413f-b07a-3bc9015a0106.png" width="350">
 
 # DIY Drone Controller (Transmitter + Receiver)
 The goal of this project is to create my very own drone RC Transmitter that is compatible with as many different flight controllers as possible. I have always wanted to build my own drone -- and for this project I sort of had to -- but DIY drones are all over the place and they pretty much come in a kit anymore, which takes away the challenge. On the other hand, DIY drone controllers, while they exist, are much less common. Plus they offer way more opportunities for customization.
