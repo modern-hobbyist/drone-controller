@@ -18,3 +18,8 @@ The hard part is getting the receiving Arduino to successfully communicate with 
 
 # Thoughts On MultiWii
 When I mentioned earlier that I've always wanted to build my own drone, well a few years back I did. Sadly, that drone never flew, but I'm convinced it would have! That drone was made literally from scratch using some perfboard, an Arduino Nano, a barometer chip, and gyro chip, and some good 'ol fashioned wires. Unfortunately, since it was running on an Arduino Nano, the flight control firmware of choice at the time was MultiWii. Not to say that anything is wrong with MultiWii, it's actually an amazing project. However, when I revisited that project, I was unable to the MultiWii configuration software up an running on my laptop, so I had to go another route. In the future, I would love to say I built my flight controller from scratch, but in the meantime, I'll have to make due with an off the shelf flight controller 😢
+
+# Building One Yourself!
+Full instructions can be found here:
+I'm terrible with documentation, so if I haven't completed all this yet, please ping me on the Discord server!
+[https://discord.gg/R3tyHfKwaw](https://discord.gg/R3tyHfKwaw)
