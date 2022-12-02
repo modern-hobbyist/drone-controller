@@ -6,6 +6,8 @@ The goal of this project is to create my very own drone RC Transmitter that is c
 
 So, for this project (at least mk. 1) I built a custom drone transmitter with an acrylic faceplate, some sweet leds, a power button, and dual joysticks with trim potentiometers. 
 
+Check out the project on [PCBWay](https://www.pcbway.com/project/shareproject/DIY_Drone_Transmitter_6b195ee1.html)!
+
 # RC Protocols
 The hardest part of this project so far has been figuring out the best way to communicate from the RC Receiver to the flight controller.
 
